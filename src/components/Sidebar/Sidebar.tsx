@@ -17,11 +17,13 @@ export function Sidebar() {
           <ImportExport />
         </div>
 
-        <div className="p-4 border-t border-brown/10 flex items-center justify-between">
-          <SupportMenu onOpenPrivacy={() => setShowPrivacy(true)} />
-          <span className="text-xs text-stone italic">
-            from the baseline workshop
-          </span>
+        <div className="p-4 border-t border-brown/10">
+          <div className="flex flex-col items-center gap-3">
+            <span className="text-xs text-stone/70 italic tracking-wide">
+              from the baseline workshop
+            </span>
+            <SupportMenu onOpenPrivacy={() => setShowPrivacy(true)} />
+          </div>
         </div>
       </aside>
 
