@@ -145,7 +145,7 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
               </button>
               <span className="text-stone/30">·</span>
               <a
-                href="https://github.com/baselinetalent/lineup"
+                href="https://github.com/phil-baseline/baseline-talent-lineup"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-deep-brown transition-colors"
