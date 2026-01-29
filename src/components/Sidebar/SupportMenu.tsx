@@ -180,10 +180,7 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
           }`}
         />
         {!isOpen && (
-          <>
-            <span className="absolute inset-0 rounded-full border-2 border-sage/0 group-hover:border-sage/30 transition-all duration-300" />
-            <span className="absolute -inset-1 rounded-full animate-ping bg-sage/20 opacity-75" style={{ animationDuration: '2s' }} />
-          </>
+          <span className="absolute inset-0 rounded-full border-2 border-sage/0 group-hover:border-sage/30 transition-all duration-300" />
         )}
       </button>
     </div>
