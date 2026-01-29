@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,50,0&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Colors - Forest Floor palette */
+  --color-cream: #FAF8F5;
+  --color-surface: #FFFFFF;
+  --color-sage: #6B7B6E;
+  --color-brown: #8B7355;
+  --color-moss: #4A5D4A;
+  --color-deep-brown: #3D3329;
+  --color-stone: #7A7067;
+
+  /* Stage colors */
+  --color-stage-applied: #D4DDD6;
+  --color-stage-screening: #E8DFD4;
+  --color-stage-interview: #C9D4C5;
+  --color-stage-decision: #E5DCC8;
+
+  /* Font families */
+  --font-headline: 'Fraunces', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Base styles */
+html {
+  background-color: var(--color-cream);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-deep-brown);
+  background-color: var(--color-cream);
+  min-height: 100vh;
+}
+
+/* Paper grain texture overlay */
+.app-background {
+  background-color: var(--color-cream);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-blend-mode: overlay;
+  opacity: 0.97;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Headline font */
+.font-headline {
+  font-family: var(--font-headline);
+  font-variation-settings: 'opsz' 32, 'SOFT' 50, 'WONK' 0;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-stone);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brown);
+}
