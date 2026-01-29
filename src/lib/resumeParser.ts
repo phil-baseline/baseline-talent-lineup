@@ -2,8 +2,8 @@ import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth';
 import type { CandidateLink } from '../store/types';
 
-// Use CDN for worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+// Use local worker - no external network requests
+pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.min.mjs';
 
 export interface ParsedResume {
   name?: string;

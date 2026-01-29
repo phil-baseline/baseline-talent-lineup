@@ -2,6 +2,22 @@ import { useState, useRef, useEffect } from 'react';
 
 const CONTACT_EMAIL = 'phil@baselinetalent.xyz';
 
+interface CopyIndicatorProps {
+  copied: boolean;
+}
+
+function CopyIndicator({ copied }: CopyIndicatorProps) {
+  if (copied) {
+    return <span className="text-xs text-moss">✓ copied</span>;
+  }
+
+  return (
+    <svg className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+    </svg>
+  );
+}
+
 interface SupportMenuProps {
   onOpenPrivacy: () => void;
 }
@@ -80,13 +96,7 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
                 className="mt-1.5 text-sm text-sage hover:text-moss transition-colors flex items-center gap-1.5 group"
               >
                 <span>{CONTACT_EMAIL}</span>
-                {copied === 'help' ? (
-                  <span className="text-xs text-moss">✓ copied</span>
-                ) : (
-                  <svg className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                )}
+                <CopyIndicator copied={copied === 'help'} />
               </button>
             </div>
 
@@ -118,13 +128,7 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
                 className="mt-1.5 text-sm text-sage hover:text-moss transition-colors flex items-center gap-1.5 group"
               >
                 <span>{CONTACT_EMAIL}</span>
-                {copied === 'bug' ? (
-                  <span className="text-xs text-moss">✓ copied</span>
-                ) : (
-                  <svg className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                )}
+                <CopyIndicator copied={copied === 'bug'} />
               </button>
             </div>
           </div>

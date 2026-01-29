@@ -48,6 +48,14 @@ interface AppActions {
 
 type Store = AppState & AppActions;
 
+function getStorageData(get: () => Store) {
+  return {
+    jobs: get().jobs,
+    candidates: get().candidates,
+    settings: get().settings,
+  };
+}
+
 export const useStore = create<Store>((set, get) => ({
   // Initial state
   jobs: [],
@@ -89,11 +97,7 @@ export const useStore = create<Store>((set, get) => ({
       await initializeStorage(handle);
     }
 
-    await saveToStorage({
-      jobs: get().jobs,
-      candidates: get().candidates,
-      settings: newSettings,
-    });
+    await saveToStorage(getStorageData(get));
   },
 
   // Jobs
@@ -110,11 +114,7 @@ export const useStore = create<Store>((set, get) => ({
     const jobs = [...get().jobs, job];
     set({ jobs, activeJobId: job.id });
 
-    await saveToStorage({
-      jobs,
-      candidates: get().candidates,
-      settings: get().settings,
-    });
+    await saveToStorage(getStorageData(get));
 
     return job;
   },
@@ -127,11 +127,7 @@ export const useStore = create<Store>((set, get) => ({
     );
     set({ jobs });
 
-    await saveToStorage({
-      jobs,
-      candidates: get().candidates,
-      settings: get().settings,
-    });
+    await saveToStorage(getStorageData(get));
   },
 
   deleteJob: async (id) => {
@@ -141,11 +137,7 @@ export const useStore = create<Store>((set, get) => ({
 
     set({ jobs, candidates, activeJobId });
 
-    await saveToStorage({
-      jobs,
-      candidates,
-      settings: get().settings,
-    });
+    await saveToStorage(getStorageData(get));
   },
 
   archiveJob: async (id, hiredCandidateId) => {
@@ -167,11 +159,7 @@ export const useStore = create<Store>((set, get) => ({
 
     set({ jobs, activeJobId });
 
-    await saveToStorage({
-      jobs,
-      candidates: get().candidates,
-      settings: get().settings,
-    });
+    await saveToStorage(getStorageData(get));
   },
 
   setActiveJob: (id) => {
@@ -217,11 +205,7 @@ export const useStore = create<Store>((set, get) => ({
     const candidates = [...get().candidates, candidate];
     set({ candidates });
 
-    await saveToStorage({
-      jobs: get().jobs,
-      candidates,
-      settings: get().settings,
-    });
+    await saveToStorage(getStorageData(get));
 
     return candidate;
   },
@@ -234,11 +218,7 @@ export const useStore = create<Store>((set, get) => ({
     );
     set({ candidates });
 
-    await saveToStorage({
-      jobs: get().jobs,
-      candidates,
-      settings: get().settings,
-    });
+    await saveToStorage(getStorageData(get));
   },
 
   deleteCandidate: async (id) => {
@@ -247,11 +227,7 @@ export const useStore = create<Store>((set, get) => ({
 
     set({ candidates, selectedCandidateId });
 
-    await saveToStorage({
-      jobs: get().jobs,
-      candidates,
-      settings: get().settings,
-    });
+    await saveToStorage(getStorageData(get));
   },
 
   moveCandidate: async (id, newStage) => {
@@ -267,11 +243,7 @@ export const useStore = create<Store>((set, get) => ({
     );
     set({ candidates });
 
-    await saveToStorage({
-      jobs: get().jobs,
-      candidates,
-      settings: get().settings,
-    });
+    await saveToStorage(getStorageData(get));
   },
 
   selectCandidate: (id) => {
@@ -281,19 +253,17 @@ export const useStore = create<Store>((set, get) => ({
   // Tags
   addCustomTag: async (tag) => {
     const settings = get().settings;
-    if (!settings.customTags.includes(tag)) {
-      const newSettings = {
-        ...settings,
-        customTags: [...settings.customTags, tag],
-      };
-      set({ settings: newSettings });
-
-      await saveToStorage({
-        jobs: get().jobs,
-        candidates: get().candidates,
-        settings: newSettings,
-      });
+    if (settings.customTags.includes(tag)) {
+      return;
     }
+
+    const newSettings = {
+      ...settings,
+      customTags: [...settings.customTags, tag],
+    };
+    set({ settings: newSettings });
+
+    await saveToStorage(getStorageData(get));
   },
 
   // Import/Export
@@ -345,11 +315,7 @@ export const useStore = create<Store>((set, get) => ({
         activeJobId: get().activeJobId || mergedJobs[0]?.id || null,
       });
 
-      await saveToStorage({
-        jobs: mergedJobs,
-        candidates: mergedCandidates,
-        settings: get().settings,
-      });
+      await saveToStorage(getStorageData(get));
 
       // Return stats for feedback
       return { newJobs: newJobs.length, newCandidates: newCandidates.length };
