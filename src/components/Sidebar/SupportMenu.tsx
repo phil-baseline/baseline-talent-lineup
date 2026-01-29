@@ -79,7 +79,7 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
                 onClick={() => handleCopyEmail('help')}
                 className="mt-1.5 text-sm text-sage hover:text-moss transition-colors flex items-center gap-1.5 group"
               >
-                <span>email {CONTACT_EMAIL}</span>
+                <span>{CONTACT_EMAIL}</span>
                 {copied === 'help' ? (
                   <span className="text-xs text-moss">✓ copied</span>
                 ) : (
@@ -117,7 +117,7 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
                 onClick={() => handleCopyEmail('bug')}
                 className="mt-1.5 text-sm text-sage hover:text-moss transition-colors flex items-center gap-1.5 group"
               >
-                <span>email {CONTACT_EMAIL}</span>
+                <span>{CONTACT_EMAIL}</span>
                 {copied === 'bug' ? (
                   <span className="text-xs text-moss">✓ copied</span>
                 ) : (
@@ -173,10 +173,10 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
         <img
           src="./assets/baseline_icon_black.svg"
           alt=""
-          className={`w-5 h-5 transition-all duration-300 ${
+          className={`w-5 h-5 transition-all duration-500 ease-out ${
             isOpen
-              ? 'brightness-0 invert'
-              : 'opacity-60 group-hover:opacity-100'
+              ? 'brightness-0 invert rotate-180'
+              : 'opacity-60 group-hover:opacity-100 group-hover:rotate-12'
           }`}
         />
         {!isOpen && (
