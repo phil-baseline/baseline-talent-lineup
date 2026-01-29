@@ -34,7 +34,7 @@ Lineup is released under the MIT License. That means you can:
 - **Remove all Baseline branding** if you prefer
 - **Use it commercially** without asking permission
 
-We built this after talking to a tech leader who was tracking candidates in Google Sheets. There had to be something better that didn't require enterprise pricing or giving up your data. If you find it useful, it's yours to keep—forever. Even if we disappear tomorrow, your copy keeps working. No vendor lock-in, no dependencies on us.
+We built this after talking to a tech leader who was tracking candidates in Google Sheets. Maybe something like this already exists—but we wanted a fun project, and there had to be something better that didn't require enterprise pricing or giving up your data. If you find it useful, it's yours to keep—forever. Even if we disappear tomorrow, your copy keeps working. No vendor lock-in, no dependencies on us.
 
 ```bash
 # Fork it, clone it, own it
