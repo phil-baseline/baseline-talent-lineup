@@ -17,21 +17,8 @@ export function Sidebar() {
           <ImportExport />
         </div>
 
-        <div className="p-4 border-t border-brown/10 flex items-center justify-between">
+        <div className="p-4 border-t border-brown/10">
           <SupportMenu onOpenPrivacy={() => setShowPrivacy(true)} />
-          <a
-            href="https://baselinetalent.xyz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs text-stone hover:text-deep-brown transition-colors"
-          >
-            A Baseline Talent tool
-            <img
-              src="./assets/baseline_icon_black.svg"
-              alt=""
-              className="w-3.5 h-3.5 opacity-50"
-            />
-          </a>
         </div>
       </aside>
 
