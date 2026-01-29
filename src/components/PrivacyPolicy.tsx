@@ -43,9 +43,30 @@ export function PrivacyPolicy({ isOpen, onClose }: PrivacyPolicyProps) {
                 browser's local storage. Still local, still yours.
               </li>
             </ul>
+          </div>
+        </section>
+
+        {/* Resume Parsing */}
+        <section>
+          <h3 className="font-headline text-lg font-semibold text-sage mb-2">
+            Resume Parsing
+          </h3>
+          <div className="text-sm leading-relaxed space-y-3">
             <p>
-              Resume parsing happens entirely in your browser using PDF.js. The resume text never
-              leaves your machine.
+              Lineup can extract information from PDF and DOCX resume files. This parsing happens
+              entirely in your browser:
+            </p>
+            <ul className="list-disc list-inside space-y-1 ml-2 text-brown">
+              <li>
+                <strong>PDF files</strong> — Parsed using PDF.js, an open-source library by Mozilla
+              </li>
+              <li>
+                <strong>DOCX files</strong> — Parsed using mammoth.js, an open-source document converter
+              </li>
+            </ul>
+            <p>
+              The resume content is processed locally to extract names, emails, phone numbers, and
+              other details. None of this data is ever sent to any server—it stays on your machine.
             </p>
           </div>
         </section>
@@ -76,6 +97,10 @@ export function PrivacyPolicy({ isOpen, onClose }: PrivacyPolicyProps) {
               <span className="text-sage mt-0.5">✗</span>
               <span>We don't train AI models on your resumes</span>
             </li>
+            <li className="flex items-start gap-2">
+              <span className="text-sage mt-0.5">✗</span>
+              <span>We don't upload your files anywhere</span>
+            </li>
           </ul>
         </section>
 
@@ -84,23 +109,30 @@ export function PrivacyPolicy({ isOpen, onClose }: PrivacyPolicyProps) {
           <h3 className="font-headline text-lg font-semibold text-sage mb-2">
             Why We Built This
           </h3>
-          <p className="text-sm leading-relaxed">
-            Most ATS platforms are built for enterprises with dedicated HR teams and big budgets.
-            They want your data because that's their business model.
-          </p>
-          <p className="text-sm leading-relaxed mt-3">
-            Lineup is different. It's for growing teams who need something simple to track candidates
-            without signing up for another SaaS that harvests data. We're recruiters ourselves at{' '}
-            <a
-              href="https://baselinetalent.xyz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sage hover:text-moss underline"
-            >
-              Baseline Talent
-            </a>
-            —we get it.
-          </p>
+          <div className="text-sm leading-relaxed space-y-3">
+            <p>
+              Most ATS platforms are built for enterprises with dedicated HR teams and big budgets.
+              They want your data because that's their business model.
+            </p>
+            <p>
+              Lineup is different. It's a free resource for small and scaling teams who want to
+              improve their candidate journey without the overhead of enterprise software. Better
+              organization means fewer dropped balls, faster responses, and a more human experience
+              for everyone involved.
+            </p>
+            <p>
+              We're recruiters ourselves at{' '}
+              <a
+                href="https://baselinetalent.xyz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sage hover:text-moss underline"
+              >
+                Baseline Talent
+              </a>
+              —we built what we wished existed.
+            </p>
+          </div>
         </section>
 
         {/* Your Responsibility */}
@@ -149,7 +181,7 @@ export function PrivacyPolicy({ isOpen, onClose }: PrivacyPolicyProps) {
             </a>
           </p>
           <p className="text-xs text-stone/60 mt-2">
-            Last updated: January 2025
+            Last updated: January 2026
           </p>
         </section>
       </div>
