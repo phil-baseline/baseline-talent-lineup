@@ -5,6 +5,10 @@ A privacy-first, open-source applicant tracking system for small teams who aren'
 **Your data stays on your machine.** All candidate information is stored locally as readable JSON files. No server, no accounts, no data collection.
 
 <p align="center">
+  <a href="https://lineup.baselinetalent.xyz"><strong>Try Lineup Now →</strong></a>
+</p>
+
+<p align="center">
   <img src="docs/screenshot-board.png" alt="Lineup Kanban Board" width="800">
 </p>
 
