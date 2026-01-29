@@ -70,8 +70,8 @@ Share hiring pipelines with colleagues:
 
 ```bash
 # Clone the repository
-git clone https://github.com/baselinetalent/lineup.git
-cd lineup
+git clone https://github.com/phil-baseline/baseline-talent-lineup.git
+cd baseline-talent-lineup
 
 # Install dependencies
 npm install
