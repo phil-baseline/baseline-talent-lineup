@@ -165,7 +165,7 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
           transition-all duration-300 ease-out
           ${isOpen
             ? 'bg-sage shadow-lg scale-105'
-            : 'bg-cream/80 hover:bg-cream hover:shadow-md hover:scale-105'
+            : 'bg-cream hover:bg-sage/20 hover:shadow-md hover:scale-105 ring-2 ring-sage/20'
           }
         `}
         aria-label="Support menu"
@@ -176,11 +176,14 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
           className={`w-5 h-5 transition-all duration-500 ease-out ${
             isOpen
               ? 'brightness-0 invert rotate-180'
-              : 'opacity-60 group-hover:opacity-100 group-hover:rotate-12'
+              : 'group-hover:rotate-12'
           }`}
         />
         {!isOpen && (
-          <span className="absolute inset-0 rounded-full border-2 border-sage/0 group-hover:border-sage/20 transition-all duration-300" />
+          <>
+            <span className="absolute inset-0 rounded-full border-2 border-sage/0 group-hover:border-sage/30 transition-all duration-300" />
+            <span className="absolute -inset-1 rounded-full animate-ping bg-sage/20 opacity-75" style={{ animationDuration: '2s' }} />
+          </>
         )}
       </button>
     </div>

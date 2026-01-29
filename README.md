@@ -24,6 +24,25 @@ Most ATS platforms require:
 - **Privacy by design** - Data never leaves your computer
 - **Simple and fast** - No accounts, no setup, just start tracking
 
+## It's Yours
+
+Lineup is released under the MIT License. That means you can:
+
+- **Fork it** and make it your own
+- **Self-host it** on your own domain
+- **Modify it** however you want
+- **Remove all Baseline branding** if you prefer
+- **Use it commercially** without asking permission
+
+We built this because we needed it. If you find it useful, it's yours to keep—forever. Even if we disappear tomorrow, your copy keeps working. No vendor lock-in, no dependencies on us.
+
+```bash
+# Fork it, clone it, own it
+git clone https://github.com/phil-baseline/baseline-talent-lineup.git
+npm install && npm run build
+# Host the dist/ folder anywhere you want
+```
+
 ## Features
 
 ### Kanban Board
@@ -208,14 +227,14 @@ npm run build
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details.
+**MIT License** - Do whatever you want with this. See [LICENSE](LICENSE) for the legal bits.
 
 ## Credits
 
-Built by [Baseline Talent](https://baselinetalent.xyz)
+Built with ☕ by [Baseline Talent](https://baselinetalent.xyz)
 
 ---
 
 <p align="center">
-  <sub>A Baseline Talent tool</sub>
+  <sub>from the baseline workshop</sub>
 </p>
