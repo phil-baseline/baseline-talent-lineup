@@ -43,26 +43,19 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
         <div
           className="absolute bottom-full left-0 mb-2 w-64 bg-surface rounded-lg shadow-xl border border-brown/10 overflow-hidden animate-in slide-in-from-bottom-2 fade-in duration-200"
         >
-          <div className="p-4 border-b border-brown/10 flex items-center gap-3">
-            <img
-              src="./assets/baseline_icon_black.svg"
-              alt="Baseline"
-              className="w-8 h-8"
-            />
-            <div>
-              <h3 className="font-headline font-semibold text-deep-brown">
-                Baseline Talent
-              </h3>
-              <a
-                href="https://baselinetalent.xyz"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-sage hover:underline"
-              >
-                baselinetalent.xyz
-              </a>
-            </div>
-          </div>
+          <a
+            href="https://baselinetalent.xyz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block p-4 border-b border-brown/10 hover:bg-cream/50 transition-colors"
+          >
+            <h3 className="font-headline font-semibold text-deep-brown">
+              Baseline Talent
+            </h3>
+            <span className="text-xs text-sage">
+              baselinetalent.xyz →
+            </span>
+          </a>
 
           <div className="p-4 space-y-4">
             <div>
@@ -160,17 +153,27 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          flex items-center justify-center w-10 h-10 rounded-full
+          flex items-center gap-1.5 px-3 py-2 rounded-full
           transition-all duration-200
           ${isOpen
-            ? 'bg-sage text-white'
-            : 'bg-cream text-sage hover:bg-sage/10'
+            ? 'bg-sage'
+            : 'bg-cream hover:bg-sage/10'
           }
         `}
         aria-label="Support menu"
       >
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        <img
+          src="./assets/baseline_icon_black.svg"
+          alt=""
+          className={`w-5 h-5 transition-all ${isOpen ? 'brightness-0 invert' : ''}`}
+        />
+        <svg
+          className={`w-3 h-3 transition-all ${isOpen ? 'text-white rotate-180' : 'text-stone'}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
         </svg>
       </button>
     </div>
