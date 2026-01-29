@@ -20,7 +20,7 @@ export function Sidebar() {
         <div className="p-4 border-t border-brown/10 flex items-center justify-between">
           <SupportMenu onOpenPrivacy={() => setShowPrivacy(true)} />
           <span className="text-xs text-stone italic">
-            a baseline talent joint
+            from the baseline workshop
           </span>
         </div>
       </aside>
