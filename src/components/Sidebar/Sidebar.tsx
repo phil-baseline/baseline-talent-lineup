@@ -17,8 +17,11 @@ export function Sidebar() {
           <ImportExport />
         </div>
 
-        <div className="p-4 border-t border-brown/10">
+        <div className="p-4 border-t border-brown/10 flex items-center justify-between">
           <SupportMenu onOpenPrivacy={() => setShowPrivacy(true)} />
+          <span className="text-xs text-stone italic">
+            a baseline talent joint
+          </span>
         </div>
       </aside>
 
