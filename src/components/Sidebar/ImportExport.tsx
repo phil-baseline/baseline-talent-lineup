@@ -6,6 +6,7 @@ import { downloadJson, readFileAsText, requestDirectoryAccess, supportsFileSyste
 export function ImportExport() {
   const [isImporting, setIsImporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const exportData = useStore((state) => state.exportData);
@@ -29,10 +30,24 @@ export function ImportExport() {
 
     setIsImporting(true);
     setError(null);
+    setSuccess(null);
 
     try {
       const text = await readFileAsText(file);
-      await importData(text);
+      const stats = await importData(text);
+
+      // Show success message with what was added
+      if (stats.newJobs === 0 && stats.newCandidates === 0) {
+        setSuccess('No new data to import (everything already exists)');
+      } else {
+        const parts = [];
+        if (stats.newJobs > 0) parts.push(`${stats.newJobs} job${stats.newJobs === 1 ? '' : 's'}`);
+        if (stats.newCandidates > 0) parts.push(`${stats.newCandidates} candidate${stats.newCandidates === 1 ? '' : 's'}`);
+        setSuccess(`Added ${parts.join(' and ')}`);
+      }
+
+      // Clear success after 5 seconds
+      setTimeout(() => setSuccess(null), 5000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to import data');
     } finally {
@@ -151,6 +166,15 @@ export function ImportExport() {
 
         {error && (
           <p className="mt-2 text-xs text-red-500">{error}</p>
+        )}
+
+        {success && (
+          <p className="mt-2 text-xs text-moss font-medium flex items-center gap-1">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            {success}
+          </p>
         )}
       </div>
     </div>

@@ -73,7 +73,7 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
             <div>
               <p className="text-sm text-deep-brown font-medium leading-snug">
                 Need recruitment help?
-                <span className="text-stone font-normal"> (or someone to vent to)</span>
+                <span className="text-stone font-normal"> (or want to talk shop)</span>
               </p>
               <button
                 onClick={() => handleCopyEmail('help')}

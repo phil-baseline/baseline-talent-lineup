@@ -40,7 +40,7 @@ interface AppActions {
 
   // Import/Export
   exportData: () => Promise<string>;
-  importData: (jsonData: string) => Promise<void>;
+  importData: (jsonData: string) => Promise<{ newJobs: number; newCandidates: number }>;
 
   // Error handling
   clearError: () => void;
@@ -317,21 +317,42 @@ export const useStore = create<Store>((set, get) => ({
         throw new Error('Invalid data format');
       }
 
+      const existingJobs = get().jobs;
+      const existingCandidates = get().candidates;
+      const existingTags = get().settings.customTags;
+
+      // Merge jobs - only add new ones (by ID)
+      const existingJobIds = new Set(existingJobs.map(j => j.id));
+      const newJobs = data.jobs.filter((j: Job) => !existingJobIds.has(j.id));
+      const mergedJobs = [...existingJobs, ...newJobs];
+
+      // Merge candidates - only add new ones (by ID)
+      const existingCandidateIds = new Set(existingCandidates.map(c => c.id));
+      const newCandidates = data.candidates.filter((c: Candidate) => !existingCandidateIds.has(c.id));
+      const mergedCandidates = [...existingCandidates, ...newCandidates];
+
+      // Merge custom tags
+      const importedTags = data.settings?.customTags || [];
+      const mergedTags = [...new Set([...existingTags, ...importedTags])];
+
       set({
-        jobs: data.jobs,
-        candidates: data.candidates,
+        jobs: mergedJobs,
+        candidates: mergedCandidates,
         settings: {
           ...get().settings,
-          customTags: data.settings?.customTags || [],
+          customTags: mergedTags,
         },
-        activeJobId: data.jobs[0]?.id || null,
+        activeJobId: get().activeJobId || mergedJobs[0]?.id || null,
       });
 
       await saveToStorage({
-        jobs: data.jobs,
-        candidates: data.candidates,
+        jobs: mergedJobs,
+        candidates: mergedCandidates,
         settings: get().settings,
       });
+
+      // Return stats for feedback
+      return { newJobs: newJobs.length, newCandidates: newCandidates.length };
     } catch (err) {
       throw new Error('Failed to import data: ' + (err instanceof Error ? err.message : 'Unknown error'));
     }
