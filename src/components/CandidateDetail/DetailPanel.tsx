@@ -103,6 +103,7 @@ export function DetailPanel() {
     if (!url) return;
 
     const newLink = createLink(url);
+    if (!newLink) return; // Invalid URL (javascript:, data:, etc.)
     if (!links.some(link => link.url.toLowerCase() === newLink.url.toLowerCase())) {
       setLinks([...links, newLink]);
     }

@@ -24,14 +24,26 @@ export function getLinkType(url: string): CandidateLink['type'] {
   return 'other';
 }
 
-export function normalizeUrl(url: string): string {
+export function normalizeUrl(url: string): string | null {
+  const trimmed = url.trim().toLowerCase();
+
+  // Reject dangerous protocols
+  if (
+    trimmed.startsWith('javascript:') ||
+    trimmed.startsWith('data:') ||
+    trimmed.startsWith('vbscript:')
+  ) {
+    return null;
+  }
+
   if (!url.startsWith('http://') && !url.startsWith('https://')) {
     return 'https://' + url;
   }
   return url;
 }
 
-export function createLink(url: string): CandidateLink {
+export function createLink(url: string): CandidateLink | null {
   const fullUrl = normalizeUrl(url.trim());
+  if (!fullUrl) return null;
   return { type: getLinkType(fullUrl), url: fullUrl };
 }

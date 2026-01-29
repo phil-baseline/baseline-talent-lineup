@@ -175,6 +175,7 @@ export function AddCandidateModal({ isOpen, onClose }: AddCandidateModalProps) {
     if (!url) return;
 
     const newLink = createLink(url);
+    if (!newLink) return; // Invalid URL (javascript:, data:, etc.)
     if (!links.some(link => link.url.toLowerCase() === newLink.url.toLowerCase())) {
       setLinks([...links, newLink]);
     }
