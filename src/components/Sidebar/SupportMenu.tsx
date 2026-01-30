@@ -129,8 +129,7 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
                 rel="noopener noreferrer"
                 className="mt-1.5 text-sm text-sage hover:text-moss transition-colors inline-flex items-center gap-1.5"
               >
-                <span>Open an issue on GitHub</span>
-                <span className="text-xs">→</span>
+                <span>Report it →</span>
               </a>
             </div>
           </div>
