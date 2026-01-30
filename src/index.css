@@ -71,3 +71,15 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-brown);
 }
+
+/* Checkmark animation */
+@keyframes checkmark {
+  0% {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 0;
+  }
+}

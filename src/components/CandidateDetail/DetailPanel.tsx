@@ -18,6 +18,8 @@ const stageOptions = [
   { value: 'passed', label: 'Passed' },
 ];
 
+type SaveStatus = 'idle' | 'saved';
+
 export function DetailPanel() {
   const selectedCandidateId = useStore((state) => state.selectedCandidateId);
   const candidates = useStore((state) => state.candidates);
@@ -41,6 +43,7 @@ export function DetailPanel() {
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
 
   useEffect(() => {
     if (candidate) {
@@ -72,6 +75,8 @@ export function DetailPanel() {
       notes,
       tags,
     });
+    setSaveStatus('saved');
+    setTimeout(() => setSaveStatus('idle'), 2000);
   };
 
   const handleDelete = async () => {
@@ -308,7 +313,16 @@ export function DetailPanel() {
 
       <div className="p-6 border-t border-brown/10 space-y-3">
         <Button onClick={handleSave} className="w-full">
-          Save Changes
+          {saveStatus === 'saved' ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg className="w-5 h-5 text-green-600 animate-[checkmark_0.4s_ease-in-out]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Saved
+            </span>
+          ) : (
+            'Save Changes'
+          )}
         </Button>
         {stage !== 'passed' ? (
           <Button

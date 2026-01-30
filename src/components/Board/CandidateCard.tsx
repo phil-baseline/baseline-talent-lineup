@@ -180,7 +180,7 @@ export function CandidateCard({ candidate, isDragging }: CandidateCardProps) {
 
       {/* Stage navigation - appears on hover */}
       {candidate.stage !== 'passed' && (
-        <div className="mt-3 pt-2 border-t border-brown/10 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="mt-2 pt-0 max-h-0 overflow-hidden opacity-0 group-hover:max-h-12 group-hover:pt-2 group-hover:mt-3 group-hover:opacity-100 group-hover:border-t group-hover:border-brown/10 transition-all duration-200">
           <div className="flex items-center justify-between gap-2 relative">
             <button
               onClick={handleMoveBack}
