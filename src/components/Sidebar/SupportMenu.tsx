@@ -123,13 +123,15 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
               <p className="text-sm text-deep-brown font-medium">
                 Found a bug?
               </p>
-              <button
-                onClick={() => handleCopyEmail('bug')}
-                className="mt-1.5 text-sm text-sage hover:text-moss transition-colors flex items-center gap-1.5 group"
+              <a
+                href="https://github.com/phil-baseline/baseline-talent-lineup/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-1.5 text-sm text-sage hover:text-moss transition-colors inline-flex items-center gap-1.5"
               >
-                <span>{CONTACT_EMAIL}</span>
-                <CopyIndicator copied={copied === 'bug'} />
-              </button>
+                <span>Open an issue on GitHub</span>
+                <span className="text-xs">→</span>
+              </a>
             </div>
           </div>
 
