@@ -100,10 +100,10 @@ export function SupportMenu({ onOpenPrivacy }: SupportMenuProps) {
               </button>
             </div>
 
-            {/* Digging Lineup */}
+            {/* Support */}
             <div>
               <p className="text-sm text-deep-brown font-medium">
-                Digging Lineup?
+                Keep the lights on
               </p>
               <a
                 href="https://ko-fi.com/baselinetalent"
