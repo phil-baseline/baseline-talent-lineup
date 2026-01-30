@@ -87,7 +87,17 @@ export function PrivacyPolicy({ isOpen, onClose }: PrivacyPolicyProps) {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-sage mt-0.5">✗</span>
-              <span>We don't use analytics that phone home</span>
+              <span>We don't use invasive analytics (we use{' '}
+                <a
+                  href="https://www.goatcounter.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sage hover:text-moss underline"
+                >
+                  GoatCounter
+                </a>
+                —no cookies, no personal data, just page views)
+              </span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-sage mt-0.5">✗</span>
