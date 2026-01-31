@@ -2,10 +2,16 @@ import { useState } from 'react';
 import { useStore } from '../store';
 import { Button } from './common/Button';
 import { AddCandidateModal } from './CandidateDetail/AddCandidateModal';
+import { useIsMobile } from '../hooks/useMediaQuery';
 
-export function Header() {
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+
+export function Header({ onMenuClick }: HeaderProps) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const isMobile = useIsMobile();
 
   const jobs = useStore((state) => state.jobs);
   const activeJobId = useStore((state) => state.activeJobId);
@@ -15,13 +21,25 @@ export function Header() {
 
   return (
     <>
-      <header className="h-16 bg-surface border-b border-brown/10 flex items-center justify-between px-6">
-        <div className="flex items-center gap-8">
-          <h1 className="font-headline text-2xl font-semibold text-deep-brown">
+      <header className={`${isMobile ? 'h-14 px-4' : 'h-16 px-6'} bg-surface border-b border-brown/10 flex items-center justify-between`}>
+        <div className="flex items-center gap-4">
+          {isMobile && (
+            <button
+              onClick={onMenuClick}
+              className="mobile-touch-target flex items-center justify-center p-2 -ml-2 text-deep-brown hover:bg-cream/50 rounded-lg transition-colors"
+              aria-label="Open menu"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          )}
+
+          <h1 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-headline font-semibold text-deep-brown`}>
             Lineup
           </h1>
 
-          {jobs.length > 0 && (
+          {!isMobile && jobs.length > 0 && (
             <div className="relative">
               <select
                 value={activeJobId || ''}
@@ -47,7 +65,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-4">
-          {activeJob && (
+          {!isMobile && activeJob && (
             <div className="relative">
               <input
                 type="text"
@@ -72,7 +90,7 @@ export function Header() {
               <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              Add Candidate
+              {!isMobile && 'Add Candidate'}
             </Button>
           )}
         </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useStore } from '../../store';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 import { Button } from '../common/Button';
 import { Input } from '../common/Input';
 import { Textarea } from '../common/Textarea';
@@ -21,6 +22,7 @@ const stageOptions = [
 type SaveStatus = 'idle' | 'saved';
 
 export function DetailPanel() {
+  const isMobile = useIsMobile();
   const selectedCandidateId = useStore((state) => state.selectedCandidateId);
   const candidates = useStore((state) => state.candidates);
   const updateCandidate = useStore((state) => state.updateCandidate);
@@ -120,7 +122,7 @@ export function DetailPanel() {
   );
 
   return (
-    <div className="fixed inset-y-0 right-0 w-96 bg-surface border-l border-brown/10 shadow-xl flex flex-col animate-in slide-in-from-right duration-250">
+    <div className={`fixed ${isMobile ? 'inset-0' : 'inset-y-0 right-0 w-96'} bg-surface border-l border-brown/10 shadow-xl flex flex-col animate-in ${isMobile ? 'slide-in-from-bottom' : 'slide-in-from-right'} duration-250 z-50`}>
       <div className="flex items-center justify-between px-6 py-4 border-b border-brown/10">
         <h2 className="font-headline text-xl font-semibold text-deep-brown">
           Candidate Details

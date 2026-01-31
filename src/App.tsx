@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from './store';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar/Sidebar';
+import { MobileDrawer } from './components/Sidebar/MobileDrawer';
 import { Kanban } from './components/Board/Kanban';
 import { DetailPanel } from './components/CandidateDetail/DetailPanel';
 
 function App() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const initialize = useStore((state) => state.initialize);
   const isLoading = useStore((state) => state.isLoading);
   const error = useStore((state) => state.error);
@@ -51,7 +53,7 @@ function App() {
         </div>
       )}
 
-      <Header />
+      <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
 
       <div className="flex-1 flex overflow-hidden">
         <Sidebar />
@@ -61,6 +63,11 @@ function App() {
       </div>
 
       {selectedCandidateId && <DetailPanel />}
+
+      <MobileDrawer
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 import type { Candidate, Stage } from '../../store/types';
 import { Tag } from '../common/Tag';
 import { LinkIcon } from '../common/LinkIcon';
@@ -41,6 +42,7 @@ function formatDate(dateString: string): string {
 
 
 export function CandidateCard({ candidate, isDragging }: CandidateCardProps) {
+  const isMobile = useIsMobile();
   const [showStagePicker, setShowStagePicker] = useState(false);
   const selectCandidate = useStore((state) => state.selectCandidate);
   const moveCandidate = useStore((state) => state.moveCandidate);
@@ -178,14 +180,14 @@ export function CandidateCard({ candidate, isDragging }: CandidateCardProps) {
         </div>
       )}
 
-      {/* Stage navigation - appears on hover */}
+      {/* Stage navigation - appears on hover, always visible on mobile */}
       {candidate.stage !== 'passed' && (
-        <div className="mt-2 pt-0 max-h-0 overflow-hidden opacity-0 group-hover:max-h-12 group-hover:pt-2 group-hover:mt-3 group-hover:opacity-100 group-hover:border-t group-hover:border-brown/10 transition-all duration-200">
+        <div className={`${isMobile ? 'mt-2 pt-2 border-t border-brown/10 opacity-100' : 'mt-2 pt-0 max-h-0 overflow-hidden opacity-0 group-hover:max-h-12 group-hover:pt-2 group-hover:mt-3 group-hover:opacity-100 group-hover:border-t group-hover:border-brown/10'} transition-all duration-200`}>
           <div className="flex items-center justify-between gap-2 relative">
             <button
               onClick={handleMoveBack}
               disabled={!canMoveBack}
-              className={`flex items-center gap-1 text-xs px-2 py-1 rounded-full transition-colors ${
+              className={`flex items-center gap-1 text-xs px-3 py-2 rounded-full transition-colors mobile-touch-target ${
                 canMoveBack
                   ? 'text-stone hover:text-deep-brown hover:bg-cream'
                   : 'text-stone/30 cursor-not-allowed'
@@ -202,7 +204,7 @@ export function CandidateCard({ candidate, isDragging }: CandidateCardProps) {
                 e.stopPropagation();
                 setShowStagePicker(!showStagePicker);
               }}
-              className="text-xs text-stone hover:text-deep-brown px-2 py-1 rounded-full hover:bg-cream transition-colors"
+              className="text-xs text-stone hover:text-deep-brown px-3 py-2 rounded-full hover:bg-cream transition-colors mobile-touch-target"
             >
               {stageLabels[candidate.stage]}
               <svg className="w-3 h-3 inline ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -213,7 +215,7 @@ export function CandidateCard({ candidate, isDragging }: CandidateCardProps) {
             <button
               onClick={handleMoveForward}
               disabled={!canMoveForward}
-              className={`flex items-center gap-1 text-xs px-2 py-1 rounded-full transition-colors ${
+              className={`flex items-center gap-1 text-xs px-3 py-2 rounded-full transition-colors mobile-touch-target ${
                 canMoveForward
                   ? 'text-sage hover:text-moss hover:bg-sage/10'
                   : 'text-stone/30 cursor-not-allowed'
@@ -232,7 +234,7 @@ export function CandidateCard({ candidate, isDragging }: CandidateCardProps) {
                   <button
                     key={stage}
                     onClick={(e) => handleStageSelect(e, stage)}
-                    className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
+                    className={`w-full text-left px-3 py-2.5 text-sm transition-colors mobile-touch-target ${
                       candidate.stage === stage
                         ? 'bg-sage/10 text-sage font-medium'
                         : 'text-deep-brown hover:bg-cream'
@@ -244,7 +246,7 @@ export function CandidateCard({ candidate, isDragging }: CandidateCardProps) {
                 <div className="border-t border-brown/10 mt-1 pt-1">
                   <button
                     onClick={(e) => handleStageSelect(e, 'passed')}
-                    className="w-full text-left px-3 py-1.5 text-sm text-stone hover:bg-red-50 hover:text-red-500 transition-colors"
+                    className="w-full text-left px-3 py-2.5 text-sm text-stone hover:bg-red-50 hover:text-red-500 transition-colors mobile-touch-target"
                   >
                     Pass
                   </button>

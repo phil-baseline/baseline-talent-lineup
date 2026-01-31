@@ -12,6 +12,7 @@ import {
 } from '@dnd-kit/core';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useStore } from '../../store';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 import type { Stage, Candidate } from '../../store/types';
 import { Column } from './Column';
 import { CandidateCard } from './CandidateCard';
@@ -20,6 +21,7 @@ import { Confetti } from '../common/Confetti';
 const stages: Stage[] = ['sourced', 'interviewing', 'feedback', 'offer', 'hired'];
 
 export function Kanban() {
+  const isMobile = useIsMobile();
   const [activeCandidate, setActiveCandidate] = useState<Candidate | null>(null);
   const [showPassed, setShowPassed] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -147,10 +149,15 @@ export function Kanban() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex-1 overflow-x-auto p-6 flex flex-col">
-        <div className="flex gap-4 flex-1 min-h-[500px]">
+      <div className={`flex-1 ${isMobile ? 'overflow-x-auto snap-x hide-scrollbar' : 'overflow-x-auto'} p-4 md:p-6 flex flex-col`}>
+        <div className={`flex ${isMobile ? 'snap-x snap-mandatory gap-0' : 'gap-4'} flex-1 ${isMobile ? '' : 'min-h-[500px]'}`}>
           {stages.map((stage) => (
-            <Column key={stage} stage={stage} candidates={candidatesByStage[stage]} />
+            <div
+              key={stage}
+              className={`${isMobile ? 'snap-center shrink-0 w-full pr-4 last:pr-0' : ''}`}
+            >
+              <Column stage={stage} candidates={candidatesByStage[stage]} />
+            </div>
           ))}
         </div>
 

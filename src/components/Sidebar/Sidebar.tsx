@@ -9,7 +9,7 @@ export function Sidebar() {
 
   return (
     <>
-      <aside className="w-60 bg-surface border-r border-brown/10 flex flex-col h-full">
+      <aside className="w-60 bg-surface border-r border-brown/10 flex flex-col h-full hidden md:flex">
         <div className="flex-1 overflow-hidden flex flex-col">
           <div className="flex-1 overflow-y-auto">
             <JobList />

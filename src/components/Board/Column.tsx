@@ -1,5 +1,6 @@
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 import type { Candidate, Stage } from '../../store/types';
 import { CandidateCard } from './CandidateCard';
 
@@ -18,6 +19,7 @@ const stageConfig: Record<Stage, { title: string; bgClass: string }> = {
 };
 
 export function Column({ stage, candidates }: ColumnProps) {
+  const isMobile = useIsMobile();
   const { setNodeRef, isOver } = useDroppable({
     id: stage,
   });
@@ -28,11 +30,12 @@ export function Column({ stage, candidates }: ColumnProps) {
     <div
       ref={setNodeRef}
       className={`
-        flex flex-col min-w-[280px] w-[280px] h-full
+        flex flex-col min-w-[280px] w-[280px] md:w-[280px] h-full
         rounded-lg ${config.bgClass}
         transition-all duration-100
         ${isOver ? 'ring-2 ring-sage ring-opacity-50' : ''}
       `}
+      style={{ width: isMobile ? 'calc(100vw - 2rem)' : '280px' }}
     >
       <div className="px-4 py-3 border-b border-brown/10">
         <h2 className="font-headline font-medium text-brown text-lg">
