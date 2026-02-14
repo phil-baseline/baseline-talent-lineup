@@ -5,6 +5,7 @@ import { Sidebar } from './components/Sidebar/Sidebar';
 import { MobileDrawer } from './components/Sidebar/MobileDrawer';
 import { Kanban } from './components/Board/Kanban';
 import { DetailPanel } from './components/CandidateDetail/DetailPanel';
+import { WelcomeModal } from './components/WelcomeModal';
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -68,6 +69,8 @@ function App() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />
+
+      <WelcomeModal />
     </div>
   );
 }
