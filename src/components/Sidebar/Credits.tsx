@@ -2,18 +2,18 @@ interface CreditsProps {
   onOpenPrivacy: () => void;
 }
 
-const linkClass = 'block py-1 text-muted hover:text-ink hover:underline';
+const linkClass = 'block w-fit py-1.5 text-muted underline-2 hover:text-ink origin-[0_60%]';
 
 export function Credits({ onOpenPrivacy }: CreditsProps) {
   return (
-    <div className="text-sm">
+    <div className="text-t1">
       <p className="mb-1 text-muted">
         Made by{' '}
         <a
           href="https://www.linkedin.com/in/phil-mosher"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-ink underline hover:text-accent"
+          className="text-ink origin-[0_60%]"
         >
           Phil Mosher
         </a>

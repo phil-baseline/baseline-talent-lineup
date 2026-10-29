@@ -37,7 +37,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           aria-label="Menu"
         >
           <div className="flex items-center justify-between px-4 h-16">
-            <span className="font-serif text-[1.5rem] font-bold leading-none">Lineup</span>
+            <span className="font-display text-t3 font-[760] [font-stretch:112%] leading-none">Lineup</span>
             <CloseButton onClick={onClose} label="Close menu" />
           </div>
           <div className="flex flex-col gap-10 px-4 pt-2 pb-10">

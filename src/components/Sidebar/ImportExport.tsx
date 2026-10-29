@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useStore } from '../../store';
 import { downloadJson, readFileAsText, requestDirectoryAccess, supportsFileSystemAccess } from '../../lib/fileStorage';
 
-const actionClass = 'block min-h-11 md:min-h-9 text-left text-ink hover:underline disabled:text-muted';
+const actionClass = 'block min-h-11 md:min-h-10 text-left text-ink underline-2 origin-[0_60%] disabled:text-muted';
 
 export function ImportExport() {
   const [isImporting, setIsImporting] = useState(false);
@@ -65,10 +65,10 @@ export function ImportExport() {
 
   return (
     <section aria-labelledby="data-heading">
-      <h2 id="data-heading" className="text-sm font-semibold text-muted mb-1">
+      <h2 id="data-heading" className="text-t1 font-semibold text-muted mb-1">
         Data
       </h2>
-      <p className="text-sm text-muted mb-1">
+      <p className="text-t1 text-muted mb-1">
         {isFolder ? 'Saved to a folder on this computer.' : 'Saved in this browser. Export to keep a backup.'}
       </p>
 
@@ -96,7 +96,7 @@ export function ImportExport() {
       <input ref={fileInputRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
 
       {message && (
-        <p role="status" className="mt-1 text-sm text-ink">
+        <p role="status" className="mt-1 text-t1 text-ink">
           {message}
         </p>
       )}
