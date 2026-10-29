@@ -1,136 +1,77 @@
-import { useState } from 'react';
 import { useStore } from '../../store';
-import { Button } from '../common/Button';
-import { Modal } from '../common/Modal';
-import { Input } from '../common/Input';
-import { Textarea } from '../common/Textarea';
 
-export function JobList() {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [newJobTitle, setNewJobTitle] = useState('');
-  const [newJobDescription, setNewJobDescription] = useState('');
+interface JobListProps {
+  onPick?: () => void;
+}
 
+export function JobList({ onPick }: JobListProps) {
   const jobs = useStore((state) => state.jobs);
+  const candidates = useStore((state) => state.candidates);
   const activeJobId = useStore((state) => state.activeJobId);
   const setActiveJob = useStore((state) => state.setActiveJob);
-  const createJob = useStore((state) => state.createJob);
   const deleteJob = useStore((state) => state.deleteJob);
+  const setNewJobOpen = useStore((state) => state.setNewJobOpen);
 
-  const handleCreateJob = async () => {
-    if (!newJobTitle.trim()) return;
-
-    await createJob(newJobTitle.trim(), newJobDescription.trim() || undefined);
-    setNewJobTitle('');
-    setNewJobDescription('');
-    setIsCreateModalOpen(false);
-  };
+  const activeCount = (jobId: string) =>
+    candidates.filter((c) => c.jobId === jobId && c.stage !== 'passed').length;
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-4 border-b border-brown/10">
-        <h2 className="font-headline font-semibold text-brown text-sm uppercase tracking-wider">
-          Jobs
-        </h2>
-      </div>
+    <section aria-labelledby="jobs-heading">
+      <h2 id="jobs-heading" className="text-sm font-semibold text-muted mb-2">
+        Jobs
+      </h2>
 
-      <div className="flex-1 overflow-y-auto p-2">
-        {jobs.length === 0 ? (
-          <div className="text-center py-8 px-4">
-            <p className="text-sm text-stone">No jobs yet</p>
-            <p className="text-xs text-stone/70 mt-1">
-              Create your first job to start tracking candidates
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-1">
-            {jobs.map((job) => (
-              <button
-                key={job.id}
-                onClick={() => setActiveJob(job.id)}
-                className={`
-                  w-full text-left px-3 py-2.5 rounded-lg
-                  transition-all duration-150
-                  group flex items-center justify-between
-                  ${activeJobId === job.id
-                    ? 'bg-sage/10 text-sage'
-                    : 'text-deep-brown hover:bg-cream'
-                  }
-                `}
-              >
-                <span className="font-medium text-sm truncate">{job.title}</span>
+      {jobs.length > 0 && (
+        <ul className="-mx-1">
+          {jobs.map((job) => {
+            const isActive = activeJobId === job.id;
+            return (
+              <li key={job.id} className="group flex items-center">
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (confirm(`Delete "${job.title}"? This will remove all candidates for this job.`)) {
+                  type="button"
+                  onClick={() => {
+                    setActiveJob(job.id);
+                    onPick?.();
+                  }}
+                  aria-current={isActive ? 'true' : undefined}
+                  className={`flex-1 min-w-0 min-h-11 md:min-h-10 px-1 py-1.5 flex items-center gap-3 text-left hover:underline ${
+                    isActive ? 'text-accent font-semibold' : 'text-ink'
+                  }`}
+                >
+                  <span className="min-w-0 break-words leading-snug">{job.title}</span>
+                  {job.status === 'archived' && <span className="text-sm text-muted font-normal">archived</span>}
+                  <span className="ml-auto text-sm text-muted font-normal">{activeCount(job.id)}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (confirm(`Delete "${job.title}" and all its candidates? This cannot be undone.`)) {
                       deleteJob(job.id);
                     }
                   }}
-                  className="opacity-0 group-hover:opacity-100 p-1 text-stone hover:text-red-500 transition-all"
+                  className="flex h-11 w-9 shrink-0 items-center justify-center text-muted hover:text-ink md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100"
+                  aria-label={`Delete ${job.title}`}
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.6 8.5h5.8l.6-8.5" stroke="currentColor" strokeWidth="1.4" />
                   </svg>
                 </button>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
 
-      <div className="p-4 border-t border-brown/10">
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => setIsCreateModalOpen(true)}
-          className="w-full"
-        >
-          <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          New Job
-        </Button>
-      </div>
-
-      <Modal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        title="Create New Job"
+      <button
+        type="button"
+        onClick={() => {
+          setNewJobOpen(true);
+          onPick?.();
+        }}
+        className="mt-1 min-h-11 text-sm font-semibold text-accent hover:underline"
       >
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleCreateJob();
-          }}
-          className="space-y-4"
-        >
-          <Input
-            label="Job Title"
-            value={newJobTitle}
-            onChange={(e) => setNewJobTitle(e.target.value)}
-            placeholder="e.g., Senior Software Engineer"
-            autoFocus
-          />
-          <Textarea
-            label="Description (optional)"
-            value={newJobDescription}
-            onChange={(e) => setNewJobDescription(e.target.value)}
-            placeholder="Brief description of the role..."
-            rows={3}
-          />
-          <div className="flex justify-end gap-3 pt-2">
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => setIsCreateModalOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={!newJobTitle.trim()}>
-              Create Job
-            </Button>
-          </div>
-        </form>
-      </Modal>
-    </div>
+        New job
+      </button>
+    </section>
   );
 }

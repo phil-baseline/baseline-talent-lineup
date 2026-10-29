@@ -44,6 +44,12 @@ interface AppActions {
 
   // Error handling
   clearError: () => void;
+
+  // Dialogs
+  isAddCandidateOpen: boolean;
+  isNewJobOpen: boolean;
+  setAddCandidateOpen: (open: boolean) => void;
+  setNewJobOpen: (open: boolean) => void;
 }
 
 type Store = AppState & AppActions;
@@ -326,4 +332,9 @@ export const useStore = create<Store>((set, get) => ({
 
   // Error handling
   clearError: () => set({ error: null }),
+
+  isAddCandidateOpen: false,
+  isNewJobOpen: false,
+  setAddCandidateOpen: (open) => set({ isAddCandidateOpen: open }),
+  setNewJobOpen: (open) => set({ isNewJobOpen: open }),
 }));

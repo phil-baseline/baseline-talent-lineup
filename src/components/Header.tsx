@@ -1,105 +1,66 @@
-import { useState } from 'react';
 import { useStore } from '../store';
 import { Button } from './common/Button';
-import { AddCandidateModal } from './CandidateDetail/AddCandidateModal';
-import { useIsMobile } from '../hooks/useMediaQuery';
+import { Chevron } from './common/Select';
+import { fieldClass } from './common/fieldClass';
 
 interface HeaderProps {
   onMenuClick: () => void;
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const isMobile = useIsMobile();
-
   const jobs = useStore((state) => state.jobs);
   const activeJobId = useStore((state) => state.activeJobId);
   const setActiveJob = useStore((state) => state.setActiveJob);
+  const setAddCandidateOpen = useStore((state) => state.setAddCandidateOpen);
 
   const activeJob = jobs.find((j) => j.id === activeJobId);
 
   return (
-    <>
-      <header className={`${isMobile ? 'h-14 px-4' : 'h-16 px-6'} bg-surface border-b border-brown/10 flex items-center justify-between`}>
-        <div className="flex items-center gap-4">
-          {isMobile && (
-            <button
-              onClick={onMenuClick}
-              className="mobile-touch-target flex items-center justify-center p-2 -ml-2 text-deep-brown hover:bg-cream/50 rounded-lg transition-colors"
-              aria-label="Open menu"
-            >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          )}
+    <header className="flex items-center gap-4 md:gap-8 px-4 md:px-6 h-16 md:h-[4.5rem] shrink-0">
+      <button
+        type="button"
+        onClick={onMenuClick}
+        className="md:hidden -ml-3 flex h-11 w-11 items-center justify-center text-ink"
+        aria-label="Open menu"
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.6" />
+        </svg>
+      </button>
 
-          <h1 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-headline font-semibold text-deep-brown`}>
-            Lineup
-          </h1>
+      <span className="font-serif text-[1.5rem] font-bold leading-none">Lineup</span>
 
-          {!isMobile && jobs.length > 0 && (
-            <div className="relative">
-              <select
-                value={activeJobId || ''}
-                onChange={(e) => setActiveJob(e.target.value)}
-                className="appearance-none bg-cream/50 border border-brown/20 rounded-lg px-4 py-2 pr-10 text-sm font-medium text-deep-brown focus:outline-none focus:ring-2 focus:ring-sage cursor-pointer"
-              >
-                {jobs.map((job) => (
-                  <option key={job.id} value={job.id}>
-                    {job.title}
-                  </option>
-                ))}
-              </select>
-              <svg
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone pointer-events-none"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          )}
+      {jobs.length > 0 && (
+        <div className="relative hidden md:block w-72">
+          <label htmlFor="job-switcher" className="sr-only">
+            Current job
+          </label>
+          <select
+            id="job-switcher"
+            value={activeJobId || ''}
+            onChange={(e) => setActiveJob(e.target.value)}
+            className={`${fieldClass} appearance-none pr-7 font-semibold truncate cursor-pointer`}
+          >
+            {jobs.map((job) => (
+              <option key={job.id} value={job.id}>
+                {job.title}
+                {job.status === 'archived' ? ' (archived)' : ''}
+              </option>
+            ))}
+          </select>
+          <Chevron />
         </div>
+      )}
 
-        <div className="flex items-center gap-4">
-          {!isMobile && activeJob && (
-            <div className="relative">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search candidates..."
-                className="w-64 px-4 py-2 pl-10 bg-cream/50 border border-brown/20 rounded-lg text-sm text-deep-brown placeholder:text-stone/60 focus:outline-none focus:ring-2 focus:ring-sage"
-              />
-              <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-          )}
-
-          {activeJob && (
-            <Button onClick={() => setIsAddModalOpen(true)}>
-              <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              {!isMobile && 'Add Candidate'}
-            </Button>
-          )}
-        </div>
-      </header>
-
-      <AddCandidateModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-      />
-    </>
+      {activeJob && (
+        <Button onClick={() => setAddCandidateOpen(true)} className="ml-auto">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 2v12M2 8h12" stroke="currentColor" strokeWidth="1.8" />
+          </svg>
+          <span className="md:hidden">Add</span>
+          <span className="hidden md:inline">Add candidate</span>
+        </Button>
+      )}
+    </header>
   );
 }
