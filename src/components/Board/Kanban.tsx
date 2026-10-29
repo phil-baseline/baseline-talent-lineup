@@ -168,6 +168,7 @@ export function Kanban() {
   return (
     <DndContext sensors={sensors} collisionDetection={collisionDetection} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="flex-1 min-w-0 overflow-x-auto overflow-y-hidden">
+        <h1 className="sr-only">{activeJob.title}</h1>
         <div className="flex h-full gap-6 px-6 pt-2">
           {pipelineStages.map((stage) => (
             <div key={stage} className="flex-1 min-w-40 max-w-64 h-full overflow-y-auto">

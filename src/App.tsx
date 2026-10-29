@@ -50,6 +50,12 @@ function App() {
         <Sidebar />
         <main className="flex-1 min-w-0 flex">
           <Kanban />
+          <p id={MOVE_HINT_ID} className="sr-only">
+            Left and right arrow keys move this candidate to the previous or next stage.
+          </p>
+          <p className="sr-only" aria-live="polite" aria-atomic="true">
+            {announcement}
+          </p>
         </main>
         {selectedCandidateId && <DetailPanel key={selectedCandidateId} />}
       </div>
@@ -58,13 +64,6 @@ function App() {
       <AddCandidateModal />
       <NewJobDialog />
       <WelcomeModal />
-
-      <p id={MOVE_HINT_ID} className="sr-only">
-        Left and right arrow keys move this candidate to the previous or next stage.
-      </p>
-      <p className="sr-only" aria-live="polite" aria-atomic="true">
-        {announcement}
-      </p>
     </div>
   );
 }
