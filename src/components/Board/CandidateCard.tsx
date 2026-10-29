@@ -4,9 +4,12 @@ import type { Candidate } from '../../store/types';
 import { useStore } from '../../store';
 import { formatAge } from '../../lib/stages';
 
+export const MOVE_HINT_ID = 'card-move-hint';
+
 interface CandidateCardProps {
   candidate: Candidate;
   dragDisabled?: boolean;
+  onKeyMove?: (candidate: Candidate, step: -1 | 1) => void;
 }
 
 function roleLine(candidate: Candidate) {
@@ -15,19 +18,21 @@ function roleLine(candidate: Candidate) {
     : candidate.title || candidate.company;
 }
 
+const nameClass = 'font-display text-t2 font-[640] leading-snug';
+
 // What the drag overlay shows: same text, no interactivity.
 export function CardPreview({ candidate }: { candidate: Candidate }) {
   const role = roleLine(candidate);
   return (
     <div className="bg-paper py-1 cursor-grabbing">
-      <p className="font-serif text-[1.0625rem] font-semibold leading-snug">{candidate.name}</p>
-      {role && <p className="text-sm text-muted leading-snug mt-0.5">{role}</p>}
-      <p className="text-[0.8125rem] text-muted mt-1">Added {formatAge(candidate.createdAt)}</p>
+      <p className={nameClass}>{candidate.name}</p>
+      {role && <p className="text-t1 text-muted leading-snug mt-0.5">{role}</p>}
+      <p className="text-t1 text-muted mt-1">Added {formatAge(candidate.createdAt)}</p>
     </div>
   );
 }
 
-export function CandidateCard({ candidate, dragDisabled }: CandidateCardProps) {
+export function CandidateCard({ candidate, dragDisabled, onKeyMove }: CandidateCardProps) {
   const selectCandidate = useStore((state) => state.selectCandidate);
   const isSelected = useStore((state) => state.selectedCandidateId === candidate.id);
 
@@ -42,29 +47,38 @@ export function CandidateCard({ candidate, dragDisabled }: CandidateCardProps) {
     <li
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={`list-none bg-paper ${isDragging ? 'opacity-0' : ''}`}
+      className={`list-none bg-paper ${isDragging ? 'invisible' : ''}`}
     >
-      {/* Pointer drag only. Keyboard users open the candidate and change Stage there. */}
+      {/* Pointer drag on the whole card. Keyboard: arrow keys on the name move stages. */}
       <div
         {...listeners}
         onClick={() => selectCandidate(candidate.id)}
-        className={`group py-1 ${dragDisabled ? 'cursor-pointer' : 'cursor-grab active:cursor-grabbing'}`}
+        className={`py-1 ${dragDisabled ? 'cursor-pointer' : 'cursor-grab active:cursor-grabbing'}`}
       >
         <button
           type="button"
+          data-card-id={candidate.id}
           onClick={(e) => {
             e.stopPropagation();
             selectCandidate(candidate.id);
           }}
+          onKeyDown={(e) => {
+            if (!onKeyMove || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+              e.preventDefault();
+              onKeyMove(candidate, e.key === 'ArrowRight' ? 1 : -1);
+            }
+          }}
           aria-pressed={isSelected}
-          className={`block text-left font-serif text-[1.0625rem] font-semibold leading-snug group-hover:underline ${
-            isSelected ? 'text-accent' : 'text-ink'
+          aria-describedby={onKeyMove ? MOVE_HINT_ID : undefined}
+          className={`block text-left text-ink origin-[0_60%] ${nameClass} ${
+            isSelected ? 'underline decoration-accent decoration-[3px] underline-offset-[0.22em]' : ''
           }`}
         >
           {candidate.name}
         </button>
-        {role && <p className="text-sm text-muted leading-snug mt-0.5">{role}</p>}
-        <p className="text-[0.8125rem] text-muted mt-1">Added {formatAge(candidate.createdAt)}</p>
+        {role && <p className="text-t1 text-muted leading-snug mt-0.5">{role}</p>}
+        <p className="text-t1 text-muted mt-1">Added {formatAge(candidate.createdAt)}</p>
       </div>
     </li>
   );

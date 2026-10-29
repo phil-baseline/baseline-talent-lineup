@@ -8,6 +8,7 @@ import { DetailPanel } from './components/CandidateDetail/DetailPanel';
 import { AddCandidateModal } from './components/CandidateDetail/AddCandidateModal';
 import { NewJobDialog } from './components/Sidebar/NewJobDialog';
 import { WelcomeModal } from './components/WelcomeModal';
+import { MOVE_HINT_ID } from './components/Board/CandidateCard';
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -16,6 +17,7 @@ function App() {
   const error = useStore((state) => state.error);
   const selectedCandidateId = useStore((state) => state.selectedCandidateId);
   const clearError = useStore((state) => state.clearError);
+  const announcement = useStore((state) => state.announcement);
 
   useEffect(() => {
     initialize();
@@ -38,7 +40,7 @@ function App() {
           <p className="text-ink">
             <span className="font-semibold">Something went wrong.</span> {error}
           </p>
-          <button type="button" onClick={clearError} className="text-sm font-semibold text-accent hover:underline">
+          <button type="button" onClick={clearError} className="min-h-11 text-t1 font-semibold text-ink underline-2">
             Dismiss
           </button>
         </div>
@@ -56,6 +58,13 @@ function App() {
       <AddCandidateModal />
       <NewJobDialog />
       <WelcomeModal />
+
+      <p id={MOVE_HINT_ID} className="sr-only">
+        Left and right arrow keys move this candidate to the previous or next stage.
+      </p>
+      <p className="sr-only" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </p>
     </div>
   );
 }

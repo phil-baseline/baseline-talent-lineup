@@ -39,6 +39,7 @@ export function Kanban() {
   const moveCandidate = useStore((state) => state.moveCandidate);
   const setNewJobOpen = useStore((state) => state.setNewJobOpen);
   const setAddCandidateOpen = useStore((state) => state.setAddCandidateOpen);
+  const announce = useStore((state) => state.announce);
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
 
@@ -74,11 +75,31 @@ export function Kanban() {
     }
   };
 
+  // Keyboard stage changes: left and right arrows on a focused card, announced politely.
+  const moveByKey = (candidate: Candidate, step: -1 | 1) => {
+    const index = pipelineStages.indexOf(candidate.stage);
+    const target = pipelineStages[index + step];
+    if (index < 0 || !target) {
+      announce(`${candidate.name} is already in ${stageLabels[candidate.stage]}.`);
+      return;
+    }
+    moveCandidate(candidate.id, target);
+    if (isMobile) setMobileStage(target);
+    announce(`${candidate.name} moved to ${stageLabels[target]}.`);
+    // The card remounts in its new column; keep focus on it.
+    requestAnimationFrame(() => {
+      document.querySelector<HTMLElement>(`[data-card-id="${candidate.id}"]`)?.focus();
+    });
+    if (target === 'hired') {
+      setHiredCandidate({ id: candidate.id, name: candidate.name });
+    }
+  };
+
   if (!activeJobId || !activeJob) {
     return (
       <div className="flex-1 px-4 md:px-6 pt-6 md:pt-2">
         <div className="max-w-md">
-          <h1 className="font-serif text-[2rem] leading-tight font-semibold mb-3">Start with a job</h1>
+          <h1 className="display text-[1.75rem] leading-tight mb-3">Start with a job</h1>
           <p className="text-muted mb-6">
             Add the role you are hiring for. Then add candidates and move them through the stages as they progress.
           </p>
@@ -91,7 +112,7 @@ export function Kanban() {
   const noCandidates = jobCandidates.length === 0;
   const firstCandidatePrompt = (
     <li className="list-none">
-      <p className="text-muted mb-1">No candidates yet.</p>
+      <p className="text-t1 text-muted mb-1">No candidates yet.</p>
       <Button variant="text" onClick={() => setAddCandidateOpen(true)}>
         Add your first candidate
       </Button>
@@ -102,8 +123,8 @@ export function Kanban() {
     const tabs: Stage[] = [...pipelineStages, 'passed'];
     return (
       <div className="flex-1 min-w-0 overflow-y-auto px-4 pb-10">
-        <h1 className="font-serif text-[1.5rem] leading-tight font-semibold mt-2 mb-3">{activeJob.title}</h1>
-        <div role="tablist" aria-label="Stages" className="flex flex-wrap gap-x-5 mb-4 -mt-1">
+        <h1 className="display text-t3 leading-tight mt-2 mb-3">{activeJob.title}</h1>
+        <div role="tablist" aria-label="Stages" className="flex flex-wrap gap-x-1 gap-y-1 -mx-3 mb-5">
           {tabs.map((stage) => {
             const selected = mobileStage === stage;
             return (
@@ -115,9 +136,9 @@ export function Kanban() {
                 aria-selected={selected}
                 aria-controls="stage-panel"
                 onClick={() => setMobileStage(stage)}
-                className={`min-h-11 text-[0.9375rem] ${selected ? 'text-accent font-semibold underline underline-offset-[0.35em] decoration-2' : 'text-ink'}`}
+                className={`min-h-11 px-3 rounded-[22px] text-t1 ${selected ? 'bg-accent text-on-accent font-semibold' : 'text-ink'}`}
               >
-                {shortStageLabels[stage]} <span className={selected ? '' : 'text-muted'}>{byStage[stage].length}</span>
+                {shortStageLabels[stage]} <span className={`font-normal ${selected ? '' : 'text-muted'}`}>{byStage[stage].length}</span>
               </button>
             );
           })}
@@ -129,11 +150,12 @@ export function Kanban() {
               candidates={byStage[mobileStage]}
               dragDisabled
               showHeading={false}
+              onKeyMove={moveByKey}
               empty={
                 noCandidates && mobileStage === 'sourced' ? (
                   firstCandidatePrompt
                 ) : (
-                  <li className="list-none text-muted">No one in {stageLabels[mobileStage].toLowerCase()}.</li>
+                  <li className="list-none text-t1 text-muted">No one in {stageLabels[mobileStage].toLowerCase()}.</li>
                 )
               }
             />
@@ -149,7 +171,12 @@ export function Kanban() {
         <div className="flex h-full gap-6 px-6 pt-2">
           {pipelineStages.map((stage) => (
             <div key={stage} className="flex-1 min-w-40 max-w-64 h-full overflow-y-auto">
-              <Column stage={stage} candidates={byStage[stage]} empty={noCandidates && stage === 'sourced' ? firstCandidatePrompt : undefined} />
+              <Column
+                stage={stage}
+                candidates={byStage[stage]}
+                onKeyMove={moveByKey}
+                empty={noCandidates && stage === 'sourced' ? firstCandidatePrompt : undefined}
+              />
             </div>
           ))}
           <div className={`${showPassed ? 'flex-1 min-w-40 max-w-64' : 'shrink-0'} h-full overflow-y-auto`}>
@@ -157,12 +184,12 @@ export function Kanban() {
               type="button"
               onClick={() => setShowPassed(!showPassed)}
               aria-expanded={showPassed}
-              className="flex items-baseline gap-2 mb-4 font-semibold text-accent hover:underline whitespace-nowrap"
+              className="flex items-baseline gap-2 mb-3 py-1.5 text-t1 font-semibold text-ink underline-2 whitespace-nowrap"
             >
               {showPassed ? 'Hide passed' : 'Passed'}
-              <span className="text-sm font-normal">{byStage.passed.length}</span>
+              <span className="font-normal text-muted">{byStage.passed.length}</span>
             </button>
-            {showPassed && <Column stage="passed" candidates={byStage.passed} showHeading={false} empty={<li className="list-none text-muted">No one passed yet.</li>} />}
+            {showPassed && <Column stage="passed" candidates={byStage.passed} showHeading={false} empty={<li className="list-none text-t1 text-muted">No one passed yet.</li>} />}
           </div>
         </div>
       </div>
