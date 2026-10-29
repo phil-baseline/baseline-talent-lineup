@@ -19,7 +19,7 @@ const EMAIL_REGEX = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
 const PHONE_REGEX = /(?:\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}/g;
 const LINKEDIN_REGEX = /(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?/gi;
 const GITHUB_REGEX = /(?:https?:\/\/)?(?:www\.)?github\.com\/[a-zA-Z0-9_-]+\/?/gi;
-const URL_REGEX = /https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi;
+const URL_REGEX = /https?:\/\/[^\s<>"{}|\\^`[\]]+/gi;
 
 export async function extractTextFromPdf(file: File): Promise<string> {
   try {
@@ -371,7 +371,7 @@ function looksLikeCompanyLine(line: string): boolean {
   if (TITLE_BLACKLIST.some(w => stripped.toLowerCase().includes(w))) return false;
 
   // Must NOT start with bullet
-  if (/^[•·\-\*]/.test(line)) return false;
+  if (/^[•·\-*]/.test(line)) return false;
 
   return isValidCompany(stripped);
 }
@@ -438,7 +438,7 @@ function extractTitleAndCompany(text: string, foundName?: string): { title?: str
 
     // Skip lines that look like skill lists
     if (lowerLine.match(/:\s*\w+\s*,/)) continue;
-    if (line.match(/^[•·\-\*]\s/)) continue;
+    if (line.match(/^[•·\-*]\s/)) continue;
 
     // Skip lines with too many words
     if (line.split(/\s+/).length > 12) continue;
@@ -458,7 +458,7 @@ function extractTitleAndCompany(text: string, foundName?: string): { title?: str
           if (prevLine.length < 2) continue;
 
           // Skip bullet points and long lines
-          if (prevLine.match(/^[•·\-\*]\s/)) continue;
+          if (prevLine.match(/^[•·\-*]\s/)) continue;
           if (prevLine.split(/\s+/).length > 6) continue;
 
           // Check if this line looks like a company
@@ -491,7 +491,7 @@ function extractTitleAndCompany(text: string, foundName?: string): { title?: str
     // Skip contact info and bullets
     if (line.match(EMAIL_REGEX) || line.match(PHONE_REGEX)) continue;
     if (line.toLowerCase().match(/https?:\/\//)) continue;
-    if (line.match(/^[•·\-\*]\s/)) continue;
+    if (line.match(/^[•·\-*]\s/)) continue;
 
     // Try "Company – Title" format
     const companyTitle = extractCompanyTitleFromLine(line);

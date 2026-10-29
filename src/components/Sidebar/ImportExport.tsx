@@ -71,7 +71,7 @@ export function ImportExport() {
       const data = await exportData();
       const date = new Date().toISOString().split('T')[0];
       downloadJson(data, `lineup-export-${date}.json`);
-    } catch (err) {
+    } catch {
       setError('Failed to export data');
     }
   };
