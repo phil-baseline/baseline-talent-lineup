@@ -1,5 +1,5 @@
 import { type SelectHTMLAttributes, forwardRef, useId } from 'react';
-import { fieldClass } from './fieldClass';
+import { fieldClass, labelClass } from './fieldClass';
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
@@ -13,7 +13,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="block text-sm font-medium text-muted">
+          <label htmlFor={inputId} className={labelClass}>
             {label}
           </label>
         )}

@@ -1,5 +1,5 @@
 import { type TextareaHTMLAttributes, forwardRef, useId } from 'react';
-import { fieldClass } from './fieldClass';
+import { fieldClass, labelClass } from './fieldClass';
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
@@ -12,7 +12,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="block text-sm font-medium text-muted">
+          <label htmlFor={inputId} className={labelClass}>
             {label}
           </label>
         )}

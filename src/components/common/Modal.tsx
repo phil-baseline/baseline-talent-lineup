@@ -41,7 +41,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'default' }: Mo
     >
       <div className={`mx-auto w-full ${sizeClasses[size]} px-4 sm:px-8 pt-6 pb-16`}>
         <div className="flex items-start justify-between gap-4 mb-8">
-          <h2 id={titleId} className="font-serif text-[1.75rem] leading-tight font-semibold pt-1">
+          <h2 id={titleId} className="display text-[1.75rem] leading-tight pt-1">
             {title}
           </h2>
           <CloseButton onClick={onClose} />
@@ -58,10 +58,10 @@ export function CloseButton({ onClick, label = 'Close' }: { onClick: () => void;
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="-mr-3 flex h-11 w-11 shrink-0 items-center justify-center text-ink hover:text-accent"
+      className="-mr-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink"
     >
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="2" />
       </svg>
     </button>
   );
