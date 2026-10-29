@@ -1,35 +1,22 @@
 import { type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'text' | 'quiet';
   children: ReactNode;
 }
 
-export function Button({
-  variant = 'primary',
-  size = 'md',
-  className = '',
-  children,
-  ...props
-}: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-150 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage disabled:opacity-50 disabled:cursor-not-allowed';
+const variants = {
+  primary:
+    'min-h-11 px-4 rounded-[2px] bg-accent text-paper font-semibold hover:bg-ink disabled:bg-muted disabled:cursor-not-allowed',
+  text: 'min-h-11 font-semibold text-accent hover:underline disabled:text-muted disabled:no-underline disabled:cursor-not-allowed',
+  quiet: 'min-h-11 text-muted hover:text-ink hover:underline',
+};
 
-  const variants = {
-    primary: 'bg-sage text-white hover:bg-moss',
-    secondary: 'bg-transparent border-2 border-sage text-sage hover:bg-sage hover:text-white',
-    ghost: 'bg-transparent text-stone hover:bg-cream hover:text-deep-brown',
-  };
-
-  const sizes = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-sm',
-    lg: 'px-6 py-3 text-base',
-  };
-
+export function Button({ variant = 'primary', className = '', children, type = 'button', ...props }: ButtonProps) {
   return (
     <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      type={type}
+      className={`inline-flex items-center justify-center gap-2 text-sm transition-colors duration-150 ${variants[variant]} ${className}`}
       {...props}
     >
       {children}

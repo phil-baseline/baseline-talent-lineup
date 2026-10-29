@@ -1,143 +1,87 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,50,0&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap');
 @import "tailwindcss";
 
-@theme {
-  /* Colors - Forest Floor palette */
-  --color-cream: #FAF8F5;
-  --color-surface: #FFFFFF;
-  --color-sage: #6B7B6E;
-  --color-brown: #8B7355;
-  --color-moss: #4A5D4A;
-  --color-deep-brown: #3D3329;
-  --color-stone: #7A7067;
-
-  /* Stage colors */
-  --color-stage-applied: #D4DDD6;
-  --color-stage-screening: #E8DFD4;
-  --color-stage-interview: #C9D4C5;
-  --color-stage-decision: #E5DCC8;
-
-  /* Font families */
-  --font-headline: 'Fraunces', serif;
-  --font-body: 'DM Sans', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+/* Four colours, no tints: background, text, muted text, one accent. */
+:root {
+  --paper: #F2F2EC;
+  --ink: #151714;
+  --muted: #464943;
+  --accent: #1D3FCC;
+  color-scheme: light;
 }
 
-/* Base styles */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #141513;
+    --ink: #ECECE5;
+    --muted: #BDBFB6;
+    --accent: #93A6FF;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+
+  --font-serif: 'Source Serif 4', 'Source Serif Pro', Georgia, serif;
+  --font-sans: 'Public Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+@layer base {
 html {
-  background-color: var(--color-cream);
+  background-color: var(--paper);
 }
 
 body {
-  font-family: var(--font-body);
-  color: var(--color-deep-brown);
-  background-color: var(--color-cream);
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: var(--ink);
+  background-color: var(--paper);
+  font-variant-numeric: tabular-nums lining-nums;
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--accent);
   min-height: 100vh;
 }
 
-/* Paper grain texture overlay */
-.app-background {
-  background-color: var(--color-cream);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-blend-mode: overlay;
-  opacity: 0.97;
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
+h1, h2, h3 {
+  text-wrap: balance;
 }
 
-/* Headline font */
-.font-headline {
-  font-family: var(--font-headline);
-  font-variation-settings: 'opsz' 32, 'SOFT' 50, 'WONK' 0;
+::selection {
+  background: var(--accent);
+  color: var(--paper);
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
+a {
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-stone);
-  border-radius: 4px;
+* {
+  scrollbar-color: var(--muted) var(--paper);
+  scrollbar-width: thin;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-brown);
+select option {
+  background: var(--paper);
+  color: var(--ink);
+}
 }
 
-/* Checkmark animation */
-@keyframes checkmark {
-  0% {
-    stroke-dasharray: 24;
-    stroke-dashoffset: 24;
-  }
-  100% {
-    stroke-dasharray: 24;
-    stroke-dashoffset: 0;
-  }
-}
-
-/* Mobile snap scrolling for kanban */
-.snap-x {
-  scroll-snap-type: x mandatory;
-}
-
-.snap-center {
-  scroll-snap-align: center;
-}
-
-.snap-start {
-  scroll-snap-align: start;
-}
-
-/* Hide scrollbar but keep functionality */
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Mobile drawer animation */
-@keyframes slideInLeft {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideOutLeft {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-.drawer-enter {
-  animation: slideInLeft 250ms ease-out;
-}
-
-.drawer-exit {
-  animation: slideOutLeft 200ms ease-in;
-}
-
-/* Touch-friendly tap targets */
-@media (max-width: 768px) {
-  .mobile-touch-target {
-    min-height: 44px;
-    min-width: 44px;
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
   }
 }

@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useRef } from 'react';
+import { type ReactNode, useEffect, useId } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,25 +9,21 @@ interface ModalProps {
 }
 
 const sizeClasses = {
-  default: 'max-w-md',
-  wide: 'max-w-4xl',
+  default: 'max-w-xl',
+  wide: 'max-w-6xl',
 };
 
+// A full-screen sheet on the page background: no scrim, no box, no shadow.
 export function Modal({ isOpen, onClose, title, children, size = 'default' }: ModalProps) {
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
 
   useEffect(() => {
+    if (!isOpen) return;
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
+      if (e.key === 'Escape') onClose();
     };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
-    }
-
+    document.addEventListener('keydown', handleEscape);
+    document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = '';
@@ -38,38 +34,35 @@ export function Modal({ isOpen, onClose, title, children, size = 'default' }: Mo
 
   return (
     <div
-      ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-deep-brown/30 backdrop-blur-sm"
-      onClick={(e) => {
-        if (e.target === overlayRef.current) {
-          onClose();
-        }
-      }}
+      className="fixed inset-0 z-50 overflow-y-auto bg-paper"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
     >
-      <div
-        className={`bg-surface rounded-lg shadow-xl w-full ${sizeClasses[size]} transform transition-all animate-in fade-in zoom-in-95 duration-200`}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-      >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-cream">
-          <h2 id="modal-title" className="font-headline text-xl font-semibold text-deep-brown">
+      <div className={`mx-auto w-full ${sizeClasses[size]} px-4 sm:px-8 pt-6 pb-16`}>
+        <div className="flex items-start justify-between gap-4 mb-8">
+          <h2 id={titleId} className="font-serif text-[1.75rem] leading-tight font-semibold pt-1">
             {title}
           </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-1 text-stone hover:text-deep-brown transition-colors rounded-full hover:bg-cream"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <CloseButton onClick={onClose} />
         </div>
-        <div className="px-6 py-4">
-          {children}
-        </div>
+        {children}
       </div>
     </div>
+  );
+}
+
+export function CloseButton({ onClick, label = 'Close' }: { onClick: () => void; label?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="-mr-3 flex h-11 w-11 shrink-0 items-center justify-center text-ink hover:text-accent"
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.6" />
+      </svg>
+    </button>
   );
 }
