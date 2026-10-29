@@ -5,13 +5,13 @@ interface PrivacyPolicyProps {
   onClose: () => void;
 }
 
-const h3 = 'font-semibold mb-2';
-const link = 'text-ink underline hover:text-accent';
+const h3 = 'display text-t3 leading-tight mb-2';
+const link = 'text-ink';
 
 export function PrivacyPolicy({ isOpen, onClose }: PrivacyPolicyProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Privacy and your data">
-      <div className="space-y-8 leading-relaxed max-w-[65ch]">
+      <div className="space-y-8 text-t2 leading-relaxed max-w-[44rem]">
         <section>
           <h3 className={h3}>The short version</h3>
           <p>
@@ -86,7 +86,7 @@ export function PrivacyPolicy({ isOpen, onClose }: PrivacyPolicyProps) {
             </a>
             .
           </p>
-          <p className="text-sm text-muted mt-2">Last updated October 2026</p>
+          <p className="text-t1 text-muted mt-2">Last updated October 2026</p>
         </section>
       </div>
     </Modal>

@@ -154,16 +154,16 @@ export function AddCandidateModal() {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="min-h-11 font-semibold text-accent hover:underline"
+              className="min-h-11 text-t2 font-semibold text-ink underline-2 origin-[0_60%]"
             >
               {resumeFile ? 'Replace the resume' : 'Upload a resume'}
             </button>
-            <p className={`text-sm ${isDragging ? 'text-accent font-semibold' : 'text-muted'}`} aria-live="polite">
+            <p className={`text-t1 ${isDragging ? 'text-ink font-semibold' : 'text-muted'}`} aria-live="polite">
               {resumeStatus}
               {!resumeFile && !isDragging && !isParsing && ' You can also drop it on this form.'}
               {resumeFile && isFilesystemMode() && ' The file will be saved to your folder.'}
             </p>
-            {parseError && <p className="text-sm text-ink font-semibold mt-1">{parseError}</p>}
+            {parseError && <p className="text-t1 text-ink font-semibold mt-1">{parseError}</p>}
             <input
               ref={fileInputRef}
               type="file"
@@ -207,13 +207,13 @@ export function AddCandidateModal() {
 
         {documentUrl && (
           <div className="mt-12 lg:mt-0 flex flex-col">
-            <h3 className="font-semibold mb-2 truncate">{resumeFile?.name}</h3>
+            <h3 className="text-t1 font-semibold mb-2 truncate">{resumeFile?.name}</h3>
             {isPdf ? (
               <iframe src={documentUrl} className="w-full flex-1 min-h-[600px]" title="Resume preview" />
             ) : (
               <>
-                <p className="text-sm text-muted mb-3">Text taken from the file. The original is kept.</p>
-                <p className="text-sm whitespace-pre-wrap leading-relaxed">{resumeText}</p>
+                <p className="text-t1 text-muted mb-3">Text taken from the file. The original is kept.</p>
+                <p className="text-t1 whitespace-pre-wrap leading-relaxed">{resumeText}</p>
               </>
             )}
           </div>

@@ -17,7 +17,7 @@ export function HiredDialog({ candidate, onClose }: HiredDialogProps) {
 
   return (
     <Modal isOpen onClose={onClose} title={`${candidate.name} is hired`}>
-      <p className="text-muted mb-8">
+      <p className="text-t2 text-muted mb-8">
         What do you want to do with the {activeJob.title} job? Archiving keeps the record and moves it out of the way.
       </p>
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2">

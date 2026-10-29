@@ -30,14 +30,14 @@ export function LinksEditor({ links, onChange }: LinksEditorProps) {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="truncate text-ink underline hover:text-accent py-1"
+                className="truncate min-w-0 text-t1 text-ink py-2 origin-[0_60%]"
               >
                 {link.url.replace(/^https?:\/\/(www\.)?/, '')}
               </a>
               <button
                 type="button"
                 onClick={() => onChange(links.filter((_, i) => i !== index))}
-                className="ml-auto shrink-0 text-sm text-muted hover:text-ink hover:underline py-1"
+                className="ml-auto shrink-0 min-h-11 text-t1 text-muted underline-2 hover:text-ink"
                 aria-label={`Remove ${link.url}`}
               >
                 Remove
@@ -63,7 +63,7 @@ export function LinksEditor({ links, onChange }: LinksEditorProps) {
           type="button"
           onClick={add}
           disabled={!url.trim()}
-          className="min-h-11 shrink-0 text-sm font-semibold text-accent hover:underline disabled:text-muted disabled:no-underline"
+          className="min-h-11 shrink-0 text-t1 font-semibold text-ink underline-2 disabled:text-muted disabled:no-underline"
         >
           Add
         </button>

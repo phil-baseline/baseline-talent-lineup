@@ -70,12 +70,12 @@ export function DetailPanel() {
     >
       <div className="px-4 md:px-0 pt-4 md:pt-0 pb-10">
         <div className="flex items-start justify-between gap-4">
-          <h2 id="detail-name" className="font-serif text-[1.75rem] leading-tight font-semibold pt-1">
+          <h2 id="detail-name" className="display text-[1.75rem] leading-tight pt-1">
             {candidate.name}
           </h2>
           <CloseButton onClick={close} label="Close candidate" />
         </div>
-        {role && <p className="text-muted mt-1">{role}</p>}
+        {role && <p className="text-t1 text-muted mt-1">{role}</p>}
 
         <div className="mt-6 max-w-56">
           <Select
@@ -112,10 +112,10 @@ export function DetailPanel() {
 
           {candidate.resumeData && (
             <details>
-              <summary className="min-h-11 flex items-center cursor-pointer font-semibold text-accent hover:underline">
+              <summary className="w-fit min-h-11 flex items-center cursor-pointer text-t1 font-semibold text-ink underline-2 origin-[0_60%]">
                 Resume text
               </summary>
-              <p className="mt-2 text-sm text-ink whitespace-pre-wrap leading-relaxed max-h-80 overflow-y-auto">
+              <p className="mt-2 text-t1 text-ink whitespace-pre-wrap leading-relaxed max-h-80 overflow-y-auto">
                 {candidate.resumeData}
               </p>
             </details>
@@ -123,7 +123,7 @@ export function DetailPanel() {
 
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2">
             <Button type="submit">Save changes</Button>
-            <span role="status" className="text-sm text-muted">
+            <span role="status" className="text-t1 text-muted">
               {saved ? 'Saved' : ''}
             </span>
           </div>

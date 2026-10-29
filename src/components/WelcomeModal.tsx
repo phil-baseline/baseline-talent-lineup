@@ -41,28 +41,28 @@ export function WelcomeModal() {
       aria-labelledby="welcome-title"
     >
       <div className="mx-auto max-w-xl px-4 sm:px-8 py-16 sm:py-24">
-        <h1 id="welcome-title" className="font-serif text-[2.75rem] sm:text-[3.5rem] leading-none font-bold mb-8">
+        <h1 id="welcome-title" className="font-display text-[3rem] sm:text-[4rem] font-[760] [font-stretch:112%] leading-none mb-8">
           Lineup
         </h1>
-        <p className="font-serif text-[1.375rem] leading-snug font-semibold mb-6">
+        <p className="text-t3 leading-[1.45] mb-6">
           A simple applicant tracker. Add a job, add candidates, and move them through the stages on a board.
         </p>
-        <p className="text-muted mb-3">
+        <p className="text-t2 text-muted mb-3">
           It is free and open source. It runs in your browser, with no account. Your data stays on your machine.
         </p>
-        <p className="text-muted mb-10">
+        <p className="text-t2 text-muted mb-10">
           Export now and then to keep a backup, or save to a folder on your computer.
         </p>
         <Button onClick={dismiss} autoFocus>
           Get started
         </Button>
-        <p className="mt-12 text-sm text-muted">
+        <p className="mt-12 text-t1 text-muted">
           Made by{' '}
           <a
             href="https://www.linkedin.com/in/phil-mosher"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-ink underline hover:text-accent"
+            className="text-ink"
           >
             Phil Mosher
           </a>
