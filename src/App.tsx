@@ -5,7 +5,10 @@ import { Sidebar } from './components/Sidebar/Sidebar';
 import { MobileDrawer } from './components/Sidebar/MobileDrawer';
 import { Kanban } from './components/Board/Kanban';
 import { DetailPanel } from './components/CandidateDetail/DetailPanel';
+import { AddCandidateModal } from './components/CandidateDetail/AddCandidateModal';
+import { NewJobDialog } from './components/Sidebar/NewJobDialog';
 import { WelcomeModal } from './components/WelcomeModal';
+import { MOVE_HINT_ID } from './components/Board/CandidateCard';
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,6 +17,7 @@ function App() {
   const error = useStore((state) => state.error);
   const selectedCandidateId = useStore((state) => state.selectedCandidateId);
   const clearError = useStore((state) => state.clearError);
+  const announcement = useStore((state) => state.announcement);
 
   useEffect(() => {
     initialize();
@@ -22,54 +26,43 @@ function App() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="app-background" />
-        <div className="text-center">
-          <div className="w-12 h-12 border-2 border-sage border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-stone">Loading your lineup...</p>
-        </div>
+        <p className="text-muted">Loading your lineup</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="app-background" />
+    <div className="h-dvh flex flex-col overflow-hidden">
+      <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
 
       {error && (
-        <div className="fixed top-4 right-4 z-50 bg-red-50 border border-red-200 rounded-lg p-4 shadow-lg flex items-start gap-3 max-w-md">
-          <svg className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div className="flex-1">
-            <p className="text-sm text-red-800">{error}</p>
-          </div>
-          <button
-            onClick={clearError}
-            className="text-red-500 hover:text-red-700 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+        <div role="alert" className="flex items-baseline gap-4 px-4 md:px-6 pb-4">
+          <p className="text-ink">
+            <span className="font-semibold">Something went wrong.</span> {error}
+          </p>
+          <button type="button" onClick={clearError} className="min-h-11 text-t1 font-semibold text-ink underline-2">
+            Dismiss
           </button>
         </div>
       )}
 
-      <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
-
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex min-h-0">
         <Sidebar />
-        <main className="flex-1 overflow-hidden flex">
+        <main className="flex-1 min-w-0 flex">
           <Kanban />
+          <p id={MOVE_HINT_ID} className="sr-only">
+            Left and right arrow keys move this candidate to the previous or next stage.
+          </p>
+          <p className="sr-only" aria-live="polite" aria-atomic="true">
+            {announcement}
+          </p>
         </main>
+        {selectedCandidateId && <DetailPanel key={selectedCandidateId} />}
       </div>
 
-      {selectedCandidateId && <DetailPanel />}
-
-      <MobileDrawer
-        isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
-      />
-
+      <MobileDrawer isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+      <AddCandidateModal />
+      <NewJobDialog />
       <WelcomeModal />
     </div>
   );

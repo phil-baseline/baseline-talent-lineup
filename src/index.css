@@ -1,143 +1,194 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,50,0&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap');
 @import "tailwindcss";
 
-@theme {
-  /* Colors - Forest Floor palette */
-  --color-cream: #FAF8F5;
-  --color-surface: #FFFFFF;
-  --color-sage: #6B7B6E;
-  --color-brown: #8B7355;
-  --color-moss: #4A5D4A;
-  --color-deep-brown: #3D3329;
-  --color-stone: #7A7067;
+/* The same system as Phil's site: two self-hosted variable fonts, four colours, one spring.
+   Lineup is a work tool, so it uses the calm end of it: small type, red only for the
+   primary action and the current state, always with dark text on the red. */
 
-  /* Stage colors */
-  --color-stage-applied: #D4DDD6;
-  --color-stage-screening: #E8DFD4;
-  --color-stage-interview: #C9D4C5;
-  --color-stage-decision: #E5DCC8;
-
-  /* Font families */
-  --font-headline: 'Fraunces', serif;
-  --font-body: 'DM Sans', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+@font-face {
+  font-family: "Anybody";
+  src: url("/fonts/anybody-var-latin.woff2") format("woff2");
+  font-weight: 500 900;
+  font-stretch: 85% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Schibsted Grotesk";
+  src: url("/fonts/schibsted-grotesk-var-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+/* Metric-matched fallbacks so the swap does not move anything. */
+@font-face {
+  font-family: "Anybody Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold"), local("Helvetica Neue Bold"), local("Roboto Bold");
+  font-weight: 100 900;
+  size-adjust: 108%;
+  ascent-override: 73.6%;
+  descent-override: 22.2%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Schibsted Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans-Regular"), local("Helvetica Neue"), local("Roboto");
+  font-weight: 100 900;
+  size-adjust: 102.5%;
+  ascent-override: 95.3%;
+  descent-override: 25.2%;
+  line-gap-override: 0%;
 }
 
-/* Base styles */
-html {
-  background-color: var(--color-cream);
-}
+/* Four colours, no tints: background, text, muted text, one accent.
+   --on-accent is not a fifth colour: it is the text colour (light) or the background (dark). */
+:root {
+  --bg: #F5F1EA;
+  --ink: #1A1411;
+  --muted: #665A52;
+  --accent: #F0502F;
+  --on-accent: var(--ink);
 
-body {
-  font-family: var(--font-body);
-  color: var(--color-deep-brown);
-  background-color: var(--color-cream);
-  min-height: 100vh;
-}
+  /* type scale, from the site */
+  --t1: 0.9375rem;                                 /* 15  meta, labels */
+  --t2: 1.125rem;                                  /* 18  body */
+  --t3: clamp(1.25rem, 1.1rem + 0.45vw, 1.5rem);   /* 20 to 24  wordmark, lead */
+  --t4: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);   /* 28 to 44  sheet titles */
 
-/* Paper grain texture overlay */
-.app-background {
-  background-color: var(--color-cream);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-blend-mode: overlay;
-  opacity: 0.97;
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
 }
-
-/* Headline font */
-.font-headline {
-  font-family: var(--font-headline);
-  font-variation-settings: 'opsz' 32, 'SOFT' 50, 'WONK' 0;
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-stone);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-brown);
-}
-
-/* Checkmark animation */
-@keyframes checkmark {
-  0% {
-    stroke-dasharray: 24;
-    stroke-dashoffset: 24;
-  }
-  100% {
-    stroke-dasharray: 24;
-    stroke-dashoffset: 0;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17120F; --ink: #F3ECE3; --muted: #A89C92; --accent: #E8502F; --on-accent: var(--bg);
+    color-scheme: dark;
   }
 }
-
-/* Mobile snap scrolling for kanban */
-.snap-x {
-  scroll-snap-type: x mandatory;
+:root[data-theme="dark"] {
+  --bg: #17120F; --ink: #F3ECE3; --muted: #A89C92; --accent: #E8502F; --on-accent: var(--bg);
+  color-scheme: dark;
 }
 
-.snap-center {
-  scroll-snap-align: center;
+@theme inline {
+  --color-paper: var(--bg);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+
+  --font-display: "Anybody", "Anybody Fallback", sans-serif;
+  --font-sans: "Schibsted Grotesk", "Schibsted Fallback", sans-serif;
+
+  --text-t1: var(--t1);
+  --text-t2: var(--t2);
+  --text-t3: var(--t3);
+  --text-t4: var(--t4);
 }
 
-.snap-start {
-  scroll-snap-align: start;
-}
-
-/* Hide scrollbar but keep functionality */
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Mobile drawer animation */
-@keyframes slideInLeft {
-  from {
-    transform: translateX(-100%);
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
-  to {
-    transform: translateX(0);
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--ink);
+    background: var(--bg);
+    /* lining only: tabular figures in Schibsted also widen the full stop and comma */
+    font-variant-numeric: lining-nums;
+    text-wrap: pretty;
+    overflow-wrap: break-word;
+    caret-color: var(--ink);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+
+  em, i, cite, dfn, address {
+    font-style: normal;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  /* Links and text buttons: a 2px underline set low, as on the site. */
+  a {
+    display: inline-block;
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.22em;
+    text-decoration-skip-ink: auto;
+  }
+
+  a, button, summary {
+    transform-origin: 50% 60%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
+
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  * {
+    scrollbar-color: var(--muted) var(--bg);
+    scrollbar-width: thin;
+  }
+
+  select option {
+    background: var(--bg);
+    color: var(--ink);
   }
 }
 
-@keyframes slideOutLeft {
-  from {
-    transform: translateX(0);
+@utility underline-2 {
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+}
+
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 680;
+  font-stretch: 104%;
+  letter-spacing: 0;
+  font-kerning: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
   }
-  to {
-    transform: translateX(-100%);
-  }
 }
 
-.drawer-enter {
-  animation: slideInLeft 250ms ease-out;
-}
-
-.drawer-exit {
-  animation: slideOutLeft 200ms ease-in;
-}
-
-/* Touch-friendly tap targets */
-@media (max-width: 768px) {
-  .mobile-touch-target {
-    min-height: 44px;
-    min-width: 44px;
+@media (forced-colors: active) {
+  .bg-accent {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
   }
 }

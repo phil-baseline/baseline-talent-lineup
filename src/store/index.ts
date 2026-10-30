@@ -44,6 +44,16 @@ interface AppActions {
 
   // Error handling
   clearError: () => void;
+
+  // Screen reader announcements (one polite live region in App)
+  announcement: string;
+  announce: (message: string) => void;
+
+  // Dialogs
+  isAddCandidateOpen: boolean;
+  isNewJobOpen: boolean;
+  setAddCandidateOpen: (open: boolean) => void;
+  setNewJobOpen: (open: boolean) => void;
 }
 
 type Store = AppState & AppActions;
@@ -68,6 +78,7 @@ export const useStore = create<Store>((set, get) => ({
   selectedCandidateId: null,
   isLoading: true,
   error: null,
+  announcement: '',
 
   // Initialization
   initialize: async () => {
@@ -246,6 +257,12 @@ export const useStore = create<Store>((set, get) => ({
     await saveToStorage(getStorageData(get));
   },
 
+  announce: (message) => {
+    // Clear first so the same sentence twice in a row is still read out.
+    set({ announcement: '' });
+    setTimeout(() => set({ announcement: message }), 50);
+  },
+
   selectCandidate: (id) => {
     set({ selectedCandidateId: id });
   },
@@ -326,4 +343,9 @@ export const useStore = create<Store>((set, get) => ({
 
   // Error handling
   clearError: () => set({ error: null }),
+
+  isAddCandidateOpen: false,
+  isNewJobOpen: false,
+  setAddCandidateOpen: (open) => set({ isAddCandidateOpen: open }),
+  setNewJobOpen: (open) => set({ isNewJobOpen: open }),
 }));
